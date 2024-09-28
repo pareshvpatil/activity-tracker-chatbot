@@ -1,0 +1,6 @@
+{
+  "somekey": "someval",
+  "openai": {
+    "apikey": "dummy-api-key"
+  }
+}
