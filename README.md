@@ -33,5 +33,4 @@ This code does not need any additional infrastructure on your machine except for
 
 ## Limitations
 
----
 This code only instantiates an OpenAI Chatbot model instance from Langchain. Further developments will bring in support for other AI platforms.
