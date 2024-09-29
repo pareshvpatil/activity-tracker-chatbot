@@ -7,7 +7,6 @@ The model will understand your activities, detect moods, and provide you with a 
 
 ## Tech stack
 
----
 - Langchain
   - langchain-core
   - langchain-community
@@ -19,7 +18,6 @@ The model will understand your activities, detect moods, and provide you with a 
 
 ## Run locally
 
----
 This code does not need any additional infrastructure on your machine except for the API Keys.
 
 ### Instructions
