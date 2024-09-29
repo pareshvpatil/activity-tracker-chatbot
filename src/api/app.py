@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import uvicorn
 from fastapi import FastAPI
 
@@ -11,16 +13,21 @@ app = FastAPI(
     description="Your personal activity assistant"
 )
 
+
 @app.post("/track-activity/{user_id}")
 async def track_activity(user_id: str, body: ActivityInput):
     return get_activity_tracker(user_id).invoke({
-        "activity": body.text
+        "activity": body.text,
+        "current_time": datetime.now().isoformat()
     })
+
 
 @app.post("/activity-report/{user_id}")
 async def track_activity(user_id: str, body: ReportInput):
     return get_activity_reporter(user_id).invoke({
-        "question": body.text
+        "question": body.text,
+        "current_time": datetime.now().isoformat()
     })
+
 
 uvicorn.run(app, host="localhost", port=8000)

@@ -50,7 +50,8 @@ activity_analysis_prompt_template = PromptTemplate(
 )
 
 response_schemas = [
-    ResponseSchema(name="activities", description="The wrapper array of activity summary object with fields 'activity', 'mood', 'duration_in_hours', 'activity_timestamp'")
+    ResponseSchema(name="activities",
+                   description="The wrapper array of activity summary object with fields 'activity', 'mood', 'duration_in_hours', 'activity_timestamp'")
 ]
 
 output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
@@ -60,17 +61,20 @@ llm_chain = activity_prompt_template | llm
 
 analysis_chain = activity_analysis_prompt_template | llm
 
+
 def load_history(user_id: str):
     chat_message_history = SQLChatMessageHistory(
         session_id=user_id, connection_string="sqlite:///chat_history.db"
     )
     return chat_message_history.messages
 
+
 def print_history(user_id: str):
     chat_message_history = SQLChatMessageHistory(
         session_id=user_id, connection_string="sqlite:///chat_history.db"
     )
     print(f"=========== history for user: {user_id} is: {len(chat_message_history.get_messages())}\n\n\n")
+
 
 def log_activity(activity: str, user_id: str) -> dict:
     chain_with_history = RunnableWithMessageHistory(
@@ -89,6 +93,7 @@ def log_activity(activity: str, user_id: str) -> dict:
 
     return response
 
+
 def get_activity_summary(question: str, user_id: str):
     history = SQLChatMessageHistory(
         session_id=user_id, connection_string="sqlite:///chat_history.db"
@@ -101,7 +106,8 @@ def get_activity_summary(question: str, user_id: str):
     )
 
     parser = StructuredOutputParser.from_response_schemas([
-        ResponseSchema(name="activities", description="The wrapper array of activity summary object with fields 'activity', 'mood', 'duration_in_hours'"),
+        ResponseSchema(name="activities",
+                       description="The wrapper array of activity summary object with fields 'activity', 'mood', 'duration_in_hours'"),
         ResponseSchema(name="total_time", description="The total time spent in hours, (optional)")
     ])
 
@@ -111,6 +117,8 @@ def get_activity_summary(question: str, user_id: str):
     })
 
     return response
+
+
 #
 # print(
 #     "response from the model: ",

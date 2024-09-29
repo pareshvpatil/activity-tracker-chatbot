@@ -1,29 +1,21 @@
-from langchain.output_parsers import StructuredOutputParser, ResponseSchema
-from langchain_core.output_parsers import BaseOutputParser
+from typing import List
 
-from src.types import PromptType
-
-
-def get_output_parser(prompt_type: PromptType) -> BaseOutputParser:
-    return parser_factory[prompt_type]()
+from langchain_core.output_parsers import PydanticOutputParser
+from pydantic import BaseModel, Field
 
 
-def _get_activity_tracker_output_parser():
-    response_schemas = [
-        ResponseSchema(name="activities", description="The wrapper array of activity summary object with fields 'activity', 'mood', 'duration_in_hours', 'activity_timestamp'")
-    ]
-    return StructuredOutputParser.from_response_schemas(response_schemas)
+class Activity(BaseModel):
+    activity: str = Field("the activity done by the user")
+    mood: str = Field("the mood extracted from the activity or the message")
+    duration_in_hours: float = Field(
+        "duration of the activity if provided or identifiable, else 0. Duration is rounded off to closes two digits in hours as a float number.")
+    activity_timestamp: str = Field("time when the activity was performed")
 
 
-def _get_activity_reporter_output_parser():
-    response_schemas = [
-        ResponseSchema(name="activities", description="The wrapper array of activity summary object with fields 'activity', 'mood', 'duration_in_hours'"),
-        ResponseSchema(name="total_time", description="The total time spent in activities, (optional)")
-    ]
-    return StructuredOutputParser.from_response_schemas(response_schemas)
+class Activities(BaseModel):
+    activities: List[Activity] = Field(
+        "The wrapper array of activity summary object with fields 'activity', 'mood', 'duration_in_hours', 'activity_timestamp'")
 
 
-parser_factory = {
-    PromptType.ACTIVITY_TRACKER: _get_activity_tracker_output_parser,
-    PromptType.ACTIVITY_REPORTER: _get_activity_reporter_output_parser
-}
+def get_parser_obj():
+    return PydanticOutputParser(pydantic_object=Activities)

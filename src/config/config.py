@@ -5,6 +5,7 @@ Pconf.file("src/config/config.json", encoding="json")
 
 config_store = Pconf.get()
 
+
 def getconfig(key: str) -> str:
     return _get_deep_value(config_store.copy(), key.split(":"))
 

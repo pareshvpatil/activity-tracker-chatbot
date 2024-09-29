@@ -11,5 +11,6 @@ class PromptType(Enum):
 class ActivityInput(CustomUserType):
     text: str
 
+
 class ReportInput(CustomUserType):
     text: str
