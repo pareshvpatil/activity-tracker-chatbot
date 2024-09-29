@@ -12,7 +12,7 @@ def get_activity_reporter(user_id: str):
     prompt_template = get_prompt_template(PromptType.ACTIVITY_REPORTER)
 
     chain_with_history = RunnableWithMessageHistory(
-        (prompt_template | ActivityBot.get_instance(getconfig("openai:apikey"))),
+        (prompt_template | ActivityBot.get_instance(apikey=getconfig("openai:apikey"), model_name=getconfig("ai_model"))),
         get_session_history=lambda: SQLChatMessageHistory(
             session_id=user_id, connection_string="sqlite:///chat_history.db"
         ),
