@@ -1,9 +1,8 @@
-from langchain_community.chat_message_histories import SQLChatMessageHistory
 from langchain_core.runnables import RunnableWithMessageHistory
 
 from src.bots.llm_factory import ActivityBot
-from src.config.config import getconfig
-from src.parsers.output_parsers import get_parser_obj
+from src.config import getconfig
+from src.parsers.output_parsers import get_output_parser
 from src.prompts.templates import get_prompt_template
 from src.types import PromptType
 
@@ -13,11 +12,9 @@ def get_activity_tracker(user_id: str):
 
     chain_with_history = RunnableWithMessageHistory(
         (prompt_template | ActivityBot.get_instance(apikey=getconfig("openai:apikey"), model_name=getconfig("ai_model"))),
-        lambda: SQLChatMessageHistory(
-            session_id=user_id, connection_string="sqlite:///chat_history.db"
-        ),
+        lambda: ActivityBot.get_chat_history(user_id),
         input_messages_key="activity",
         history_messages_key="history"
     )
 
-    return chain_with_history | get_parser_obj()
+    return chain_with_history | get_output_parser()

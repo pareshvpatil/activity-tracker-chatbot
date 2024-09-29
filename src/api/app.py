@@ -5,6 +5,7 @@ from fastapi import FastAPI
 
 from src.bots.activity_reporter import get_activity_reporter
 from src.bots.activity_tracker import get_activity_tracker
+from src.bots.llm_factory import ActivityBot
 from src.types import ActivityInput, ReportInput
 
 app = FastAPI(
@@ -28,6 +29,16 @@ async def track_activity(user_id: str, body: ReportInput):
         "question": body.text,
         "current_time": datetime.now().isoformat()
     })
+
+
+@app.delete("/clear-history/{user_id}")
+async def clear_history(user_id: str):
+    chat_history = ActivityBot.get_chat_history(user_id)
+    chat_history.clear()
+
+    return {
+        "message": f"user history cleared for: {user_id}"
+    }
 
 
 uvicorn.run(app, host="localhost", port=8000)

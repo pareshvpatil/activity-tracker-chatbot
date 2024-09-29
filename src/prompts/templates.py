@@ -36,18 +36,19 @@ def _get_activity_reporter_prompt():
         template="""
         You are an assistant that helps the user track their activities, 
         identify moods from their message, and provides them with a structured response.
-        Please consider only the conversation history available to you from the context, 
-        and provide activity summary as the response in a JSON structure with attributes:
+        You are building an activity report filtered by the 'activity_timestamp' by considering the chat history you have.
+        Provide the response with the following fields in a JSON format:
         'activity', 'mood', 'duration_in_hours', 'activity_timestamp'.
-        Wrap an activity json object under a single key: 'activities' as an array 
-        and do include the total time spent in activities as well in the field: 'total_time'.
-        
-        Summarise activities and moods separately in the response.
+        Wrap the activity json object under a single key: 'activities' as an array and include the total time spent in activities in the field: 'total_time'.
         
         Also, do not consider the summary request messages from the conversation history, only consider the activity messages.
         
-        Calculate the summary based on current_time and question content. current_time is: {current_time}.
+        Only consider the activities whose 'activity_timestamp' lies within the time period asked in the activity report question.
+        To come up with the time period to filter the activities, consider the current_time provided, and build the relative time period from the question.
         
+        The current_time is: {current_time}.
+        
+        The question is:
         {question}
         """
     )

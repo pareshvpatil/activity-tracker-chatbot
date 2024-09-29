@@ -16,6 +16,8 @@ class Activities(BaseModel):
     activities: List[Activity] = Field(
         "The wrapper array of activity summary object with fields 'activity', 'mood', 'duration_in_hours', 'activity_timestamp'")
 
+    total_time: float = Field(description="The total time done in the activity in summary", default=None)
 
-def get_parser_obj():
+
+def get_output_parser():
     return PydanticOutputParser(pydantic_object=Activities)
