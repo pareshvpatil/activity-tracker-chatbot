@@ -1,0 +1,29 @@
+@startuml
+title Track Activity
+
+Client -> TrackActivityAPI : POST Request
+TrackActivityAPI -> Backend
+Backend -> "Langchain Chain" : Invoke Chain
+"Langchain Chain" --> LLMModel : Process Prompt
+LLMModel -> "Langchain Chain" : Response
+"Langchain Chain" -> ChatHistory : Save History
+"Langchain Chain" --> OutputParser : Parse Output
+OutputParser -> Backend : JSON Object
+Backend -> TrackActivityAPI : Return Response
+TrackActivityAPI -> Client : Send Response
+@enduml
+
+@startuml
+title Activity Report
+
+Client -> ActivityReportAPI : POST Request with Text
+ActivityReportAPI -> Backend
+Backend -> "Langchain Chain" : Invoke Chain
+"Langchain Chain" -> LLMModel : Process Prompt
+LLMModel -> "Langchain Chain" : Response
+"Langchain Chain" -> ChatHistory : Save History
+"Langchain Chain" -> OutputParser : Parse Output
+OutputParser -> Backend : JSON Object
+Backend -> ActivityReportAPI : Return Response
+ActivityReportAPI -> Client : Send Response
+@enduml
