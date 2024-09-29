@@ -1,7 +1,7 @@
 @startuml
 title Track Activity
 
-Client -> TrackActivityAPI : POST Request
+Client -> TrackActivityAPI : { \n\t'text': 'I went to the gym for 2 hours yesterday evening'\n}
 TrackActivityAPI -> Backend
 Backend -> "Langchain Chain" : Invoke Chain
 "Langchain Chain" --> LLMModel : Process Prompt
@@ -16,7 +16,7 @@ TrackActivityAPI -> Client : Send Response
 @startuml
 title Activity Report
 
-Client -> ActivityReportAPI : POST Request with Text
+Client -> ActivityReportAPI : { \n\t'text': 'What all activities did I do last week?'\n}
 ActivityReportAPI -> Backend
 Backend -> "Langchain Chain" : Invoke Chain
 "Langchain Chain" -> LLMModel : Process Prompt
