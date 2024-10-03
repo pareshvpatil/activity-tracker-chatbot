@@ -24,7 +24,7 @@ async def track_activity(user_id: str, body: ActivityInput):
 
 
 @app.post("/activity-report/{user_id}")
-async def track_activity(user_id: str, body: ReportInput):
+async def report_activities(user_id: str, body: ReportInput):
     return get_activity_reporter(user_id).invoke({
         "question": body.text,
         "current_time": datetime.now().isoformat()
